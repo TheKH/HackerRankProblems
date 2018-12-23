@@ -4,11 +4,14 @@
 
 #include "title_capitalization/title_capitalization.h"
 #include <sstream>
+#include <algorithm>
+#include <utility>
+#include <iostream>
 
 std::string TitleCapitalization::ConvertToUpStyle(std::string title) {
 
     std::string up_style_title{};
-    auto words = BreakTitleUp(title);
+    auto words = BreakTitleUp(std::move(title));
 
     auto first_word = Capitalize(words.front());
     auto last_word = Capitalize(words.back());
@@ -16,7 +19,7 @@ std::string TitleCapitalization::ConvertToUpStyle(std::string title) {
 
     for(auto word = words.begin() + 1; word != --words.end() ; word++) {
         *word = LowerCase(*word);
-        if(!isWordInList(*word)) {
+        if(!IsWordInListNotToCapitalize(*word)) {
             *word = Capitalize(*word);
         }
         up_style_title += *word + " ";
@@ -27,29 +30,29 @@ std::string TitleCapitalization::ConvertToUpStyle(std::string title) {
 }
 
 std::string TitleCapitalization::LowerCase(std::string word) {
-    for(auto & character : word) {
-        character = tolower(character);
-    }
+
+    std::transform(word.begin(),word.end(),word.begin(), ::tolower);
+
     return word;
 }
 
 std::string TitleCapitalization::Capitalize(std::string word) {
     word = LowerCase(word);
-    word.front() = toupper(word.front());
+    word.front() = static_cast<unsigned char>(std::toupper(word.front()));
     return word;
 }
 
 std::vector<std::string> TitleCapitalization::BreakTitleUp(std::string title) {
     std::stringstream sentence(title);
     std::string word {};
-    std::vector<std::string> vector_of_strings;
+    std::vector<std::string> words;
     while(sentence >> word) {
-        vector_of_strings.push_back(word);
+        words.push_back(word);
     }
-    return vector_of_strings;
+    return words;
 }
 
-bool TitleCapitalization::isWordInList(std::string word) {
+bool TitleCapitalization::IsWordInListNotToCapitalize(std::string word) {
     static const std::vector<std::string> words_not_to_capitalize{"a","the","to","at","in","with", "but","or"};
 
     for(const auto & word_not_to_capitalize : words_not_to_capitalize) {
