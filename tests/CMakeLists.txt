@@ -3,3 +3,4 @@ project(HackerRankProblems_tests)
 
 
 add_subdirectory(title_capitalization_test)
+add_subdirectory(sock_merchant_tests)
