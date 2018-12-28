@@ -1,0 +1,6 @@
+cmake_minimum_required(VERSION 3.13)
+project(jumping_clouds_test)
+
+add_executable(jumping_clouds_check jumping_clouds_check.cpp)
+
+target_link_libraries(jumping_clouds_check gtest gtest_main)
