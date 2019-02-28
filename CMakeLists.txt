@@ -21,6 +21,9 @@ target_include_directories(title PUBLIC)
 add_library(sock_merchant src/sock_merchant/sock_merchant.cpp)
 target_include_directories(sock_merchant PUBLIC)
 
+add_library(bracket_checker src/bracket_checker/bracket_checker.cpp)
+target_include_directories(bracket_checker PUBLIC)
+
 #The main application
 add_executable(prog src/main.cpp)
 target_link_libraries(prog PRIVATE title)
